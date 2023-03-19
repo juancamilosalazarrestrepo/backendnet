@@ -1,5 +1,6 @@
 ﻿using backendnet.Domain.IServices;
 using backendnet.Domain.Models;
+using backendnet.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +24,9 @@ namespace backendnet.Controllers
                 var validateExistence = await _usuarioServices.ValidateExistence(usuario);
                 if (validateExistence)
                 {
-                    return BadRequest(new { message = "El usuario" + usuario.NombreUsuario + "Ya existe" });
+                    return BadRequest(new { message = "El usuario " + usuario.NombreUsuario + " Ya existe" });
                 }
+                usuario.Password=Encriptar.EncriptarPassword(usuario.Password);
                  await _usuarioServices.SaveUser(usuario);
                 return Ok(new { message = "Usuario Registrado con exito" });
 

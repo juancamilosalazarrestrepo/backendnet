@@ -3,6 +3,8 @@ using backendnet.Domain.Models;
 using backendnet.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace backendnet.Controllers
 {
@@ -11,9 +13,14 @@ namespace backendnet.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ILoginService _loginService;
-        public LoginController(ILoginService loginService)
+        public readonly IConfiguration _config;
+        
+        public LoginController(ILoginService loginService, IConfiguration config)
         {
+         
+            _config = config;
             _loginService = loginService;
+            
         }
 
         [HttpPost]
@@ -27,7 +34,11 @@ namespace backendnet.Controllers
                 {
                     return BadRequest(new { message = "Usuario o Contraseña invalidos" });
                 }
-                return Ok(new { usuario = user.NombreUsuario });
+
+                var variable = _config["variable:vari"];
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
+                string tokenString = JwtConfigurator.GetToken(user,_config);
+                return Ok(new { token = tokenString });
 
             }
             catch (Exception ex)

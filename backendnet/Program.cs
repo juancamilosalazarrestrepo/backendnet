@@ -22,17 +22,20 @@ var configuration = builder2.Build();
 // Add services to the container. agregar servicios
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(Program));
 
 //Servicios
 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ILoginService,LoginService>();
+builder.Services.AddScoped<ICuestionarioService, CuestionarioService>();
 
 
 //Repositories
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ILoginRepository,LoginRepository>();
+builder.Services.AddScoped<ICuestionarioRepository, CuestionarioRepository>();
 
 //cors
 

@@ -11,8 +11,8 @@ namespace backendnet.Domain.Models
         [Column(TypeName ="varchar(50)")]
         public string? Descripcion { get; set; }
         [Required]
-        public bool? EsCorrecta { get; set; }
-        public int? PReguntaId { get; set; }
-        public Pregunta Pregunta { get; set; }
+        public bool EsCorrecta { get; set; }
+        public int PReguntaId { get; set; }
+        public Pregunta? Pregunta { get; set; }
     }
 }

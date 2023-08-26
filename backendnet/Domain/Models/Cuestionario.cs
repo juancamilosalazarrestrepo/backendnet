@@ -13,11 +13,12 @@ namespace backendnet.Domain.Models
         [Required]
         [Column(TypeName = "varchar(150)")]
         public string? Descripcion { get; set; }
+        public DateTime FechaCreacion { get; set; }
         public int Activo { get; set; }
 
         public int UsuarioId { get; set; }
         public Usuario? Usuario { get; set; }
 
-        public List<Pregunta>? Pregunta { get; set; }
+        public List<Pregunta>? ListPreguntas { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace backendnet.Services
         private readonly ICuestionarioRepository _cuestionarioRepository;
         public CuestionarioService(ICuestionarioRepository cuestionarioRepository)
         {
-         _cuestionarioRepository = cuestionarioRepository   
+            _cuestionarioRepository = cuestionarioRepository;
         }
         public async Task CreateCuestionario(Cuestionario cuestionario)
         {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backendnet.Persistence.Repositories
 {
-    public class CuestionarioRepository: ICuestionarioRepository
+    public class CuestionarioRepository : ICuestionarioRepository
     {
         private readonly AplicationDbContext _context;
         public CuestionarioRepository(AplicationDbContext context)
@@ -21,19 +21,19 @@ namespace backendnet.Persistence.Repositories
 
         public async Task<List<Cuestionario>> GetListCuestionarioByUser(int idUsuario)
         {
-           var listCuestionario =  await _context.Cuestionario.Where(x => x.Activo == 1 && x.UsuarioId == idUsuario).ToListAsync();
-           return listCuestionario;
+            var listCuestionario = await _context.Cuestionario.Where(x => x.Activo == 1 && x.UsuarioId == idUsuario).ToListAsync();
+            return listCuestionario;
 
         }
         public async Task<Cuestionario> GetCuestionario(int idCuestionario)
         {
-            var cuestionario = await _context.Cuestionario.Where(x=>x.Id == idCuestionario && x.Activo == 1 ).Include(x=>x.ListPreguntas).ThenInclude(x => x.listRespuestas).FirstOrDefaultAsync();
+            var cuestionario = await _context.Cuestionario.Where(x => x.Id == idCuestionario && x.Activo == 1).Include(x => x.ListPreguntas).ThenInclude(x => x.listRespuestas).FirstOrDefaultAsync();
             return cuestionario;
         }
 
-        public async Task<Cuestionario> Buscarcuestionario(int idCuestionario)
+        public async Task<Cuestionario> BuscarCuestionario(int idCuestionario, int idUsuario)
         {
-            var cuestionario = await _context.Cuestionario.Where(x=>x.Id == idCuestionario && x.Activo == 1).FirstOrDefaultAsync();
+            var cuestionario = await _context.Cuestionario.Where(x => x.Id == idCuestionario && x.Activo == 1 && x.UsuarioId == idUsuario).FirstOrDefaultAsync();
             return cuestionario;
         }
 
@@ -41,6 +41,12 @@ namespace backendnet.Persistence.Repositories
         {
             cuestionario.Activo = 0;
             _context.Entry(cuestionario).State = EntityState.Modified;
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
         }
+        public async Task<List<Cuestionario>> GetListCuestionarios()
+        {
+            var listCuestionarios = await _context.Cuestionario.Where(x => x.Activo == 1).Select(o => new Cuestionario { Id = o.Id, Nombre = o.Nombre, Descripcion = o.Descripcion, FechaCreacion = o.FechaCreacion, Usuario = new Usuario { NombreUsuario = o.Usuario.NombreUsuario } }).ToListAsync();
+            return listCuestionarios;
+        }
+    }
 }

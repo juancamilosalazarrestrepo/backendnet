@@ -74,5 +74,42 @@ namespace backendnet.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpDelete("{idCuestionario}")]
+        [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Delete(int idCuestionario)
+        {
+            try
+            {
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                int idUsuario = JwtConfigurator.GetTokenIdUsuario(identity);
+                var cuestionario = await _cuestionarioService.BuscarCuestionario(idCuestionario,idUsuario);
+                if(cuestionario == null)
+                {
+                    return BadRequest(new { message = "No se encontro ningun cuestionario" });
+                }
+                await _cuestionarioService.EliminarCuestionario(cuestionario);
+                return Ok(new { message = "El cuestionario fue eliminado con exito" });
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+        [Route("GetListCuestionarios")]
+        [HttpGet]
+        public async Task<IActionResult> GetListCuestionarios()
+        {
+            try
+            {
+                var listCuestionarios = await _cuestionarioService.GetListCuestionarios();
+                return Ok(listCuestionarios);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

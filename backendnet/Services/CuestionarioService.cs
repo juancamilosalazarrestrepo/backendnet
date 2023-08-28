@@ -11,9 +11,20 @@ namespace backendnet.Services
         {
             _cuestionarioRepository = cuestionarioRepository;
         }
+
+        public async Task<Cuestionario> BuscarCuestionario(int idCuestionario)
+        {
+            return await _cuestionarioRepository.BuscarCuestionario(idCuestionario);
+        }
+
         public async Task CreateCuestionario(Cuestionario cuestionario)
         {
             await _cuestionarioRepository.CreateCuestionario(cuestionario);
+        }
+
+        public async Task EliminarCuestionario(Cuestionario cuestionario)
+        {
+           await _cuestionarioRepository.EliminarCuestionario(cuestionario);
         }
 
         public async Task<Cuestionario> GetCuestionario(int idCuestionario)
